@@ -76,8 +76,10 @@ namespace p0wnedLoader
             catch (Exception)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("[!] There was a issue with the url...");
+                Console.WriteLine();
+                Console.WriteLine("\n[!] Whoops, there was a issue with the url...");
                 Console.ResetColor();
+                Environment.Exit(1);
                 return null;
             }
         }
