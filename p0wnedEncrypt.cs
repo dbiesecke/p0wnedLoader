@@ -71,6 +71,14 @@ class p0wnedEncrypt
         return encryptedBytes;
     }
 
+    public static byte[] GetRandomBytes()
+    {
+        int _saltSize = 4;
+        byte[] ba = new byte[_saltSize];
+        RNGCryptoServiceProvider.Create().GetBytes(ba);
+        return ba;
+    }
+
     public static byte[] CompressBin(byte[] data)
     {
         using (var compressedStream = new MemoryStream())
@@ -110,7 +118,22 @@ class p0wnedEncrypt
             Console.Write("[*] AES Encrypt our Bytes.".PadRight(58));
             byte[] PasswordBytes = Encoding.UTF8.GetBytes(Password);
             PasswordBytes = SHA256.Create().ComputeHash(PasswordBytes);
-            byte[] bytesEncrypted = AES_Encrypt(FileBytes, PasswordBytes);
+
+            // Generating salt bytes
+            byte[] saltBytes = GetRandomBytes();
+
+            // Appending salt bytes to original bytes
+            byte[] bytesToBeEncrypted = new byte[saltBytes.Length + FileBytes.Length];
+            for (int i = 0; i < saltBytes.Length; i++)
+            {
+                bytesToBeEncrypted[i] = saltBytes[i];
+            }
+            for (int i = 0; i < FileBytes.Length; i++)
+            {
+                bytesToBeEncrypted[i + saltBytes.Length] = FileBytes[i];
+            }
+
+            byte[] bytesEncrypted = AES_Encrypt(bytesToBeEncrypted, PasswordBytes);
             Console.WriteLine("-> Done");
 
             Console.Write("[*] Now let's Compress our Bytes.".PadRight(58));
