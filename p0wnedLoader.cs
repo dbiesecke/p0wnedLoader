@@ -21,7 +21,6 @@ using System;
 using System.Net;
 using System.Text;
 using System.IO;
-using System.Security;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.IO.Compression;
@@ -82,21 +81,6 @@ namespace p0wnedLoader
                 Console.ResetColor();
                 Environment.Exit(1);
                 return null;
-            }
-        }
-
-        class SecurePass
-        {
-            SecureString securePwd = new SecureString();
-
-            public SecureString convertToSecureString(string strPassword)
-            {
-                var secureStr = new SecureString();
-                if (strPassword.Length > 0)
-                {
-                    foreach (var c in strPassword.ToCharArray()) secureStr.AppendChar(c);
-                }
-                return secureStr;
             }
         }
 
