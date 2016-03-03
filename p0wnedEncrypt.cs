@@ -11,7 +11,11 @@ Compile:
 cd \Windows\Microsoft.NET\Framework64\v4.0.30319
 csc.exe  /out:"C:\Utils\p0wnedEncrypt.exe" /platform:x64 "C:\Utils\p0wnedEncrypt.cs"
 
-p0wnedEncrypt.exe p0wnedShell.exe PassWord p0wnedShell.enc
+Usage:
+p0wnedEncrypt.exe p0wnedShellX64.exe YourPassWord! p0wnedShellX64.enc
+p0wnedEncrypt.exe p0wnedShellX86.exe YourPassWord! p0wnedShellX86.enc
+
+Then Upload somewhere on the Net and use p0wnedLoader to Load are Candy.
 
 */
 
@@ -113,7 +117,9 @@ class p0wnedEncrypt
 
             Console.Write("[*] First Read All Bytes.".PadRight(58));
             byte[] FileBytes = File.ReadAllBytes(FileName);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("-> Done");
+            Console.ResetColor();
 
             Console.Write("[*] AES Encrypt our Bytes.".PadRight(58));
             byte[] PasswordBytes = Encoding.UTF8.GetBytes(Password);
@@ -134,16 +140,22 @@ class p0wnedEncrypt
             }
 
             byte[] bytesEncrypted = AES_Encrypt(bytesToBeEncrypted, PasswordBytes);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("-> Done");
+            Console.ResetColor();
 
             Console.Write("[*] Now let's Compress our Bytes.".PadRight(58));
             byte[] compress = CompressBin(bytesEncrypted);
             string encoded = Base64_Encode(compress);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("-> Done");
+            Console.ResetColor();
 
             Console.Write("[*] And finally encode our Bytes as a Base64 string.".PadRight(58));
             File.WriteAllText(OutFile, encoded);
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("-> Done");
+            Console.ResetColor();
 
             Console.WriteLine("\n[!] Base64 string saved as " + OutFile);
         }

