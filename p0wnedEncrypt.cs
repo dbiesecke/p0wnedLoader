@@ -15,7 +15,7 @@ Usage:
 p0wnedEncrypt.exe p0wnedShellX64.exe YourPassWord! p0wnedShellX64.enc
 p0wnedEncrypt.exe p0wnedShellX86.exe YourPassWord! p0wnedShellX86.enc
 
-Then Upload the Encrypted payload somewhere on the Net and use p0wnedLoader to Load our Candy.
+Now upload the Encrypted payload somewhere on the Net and use p0wnedLoader to Load your Candy.
 
 */
 
