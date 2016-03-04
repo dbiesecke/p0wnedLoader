@@ -215,16 +215,33 @@ namespace p0wnedLoader
 
         public static void Launch(byte[] p0wnedEnc)
         {
-            // load the bytes into Assembly
-            Assembly a = Assembly.Load(p0wnedEnc);
-            // search for the Entry Point
-            MethodInfo method = a.EntryPoint;
-            if (method != null)
+            string Arch = System.Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+            string LoaderArch = "x86";
+
+            if (Arch == "AMD64")
             {
-                // create an istance of the Startup form Main method
-                object o = a.CreateInstance(method.Name);
-                // invoke the application starting point
-                method.Invoke(o, null);
+                LoaderArch = "x64";
+            }
+            try
+            {
+                // load the bytes into Assembly
+                Assembly a = Assembly.Load(p0wnedEnc);
+                // search for the Entry Point
+                MethodInfo method = a.EntryPoint;
+                if (method != null)
+                {
+                    // create an istance of the Startup form Main method
+                    object o = a.CreateInstance(method.Name);
+                    // invoke the application starting point
+                    method.Invoke(o, null);
+                }
+            }
+            catch
+            {                
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("[!] You run a {0} version of p0wnedLoader, so make sure you load a corresponding version of p0wnedShell", LoaderArch);
+                Console.ResetColor();
+                Environment.Exit(1);
             }
         }
 
